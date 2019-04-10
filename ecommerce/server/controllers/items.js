@@ -62,6 +62,13 @@ inventories.findOne({
           var qty = inv.quantity-stock;
           if(qty>=0)
 {
+
+carts.findOne({
+  where:{custId:req.body.custId,itmId:id},
+}).then(function (present)
+{
+  if(!present){
+
     carts.create({
       
       quantity:stock,
@@ -69,16 +76,22 @@ inventories.findOne({
       itmId:id,
     })
     .then(carts => res.status(201).send(carts))
-    
 
+    inventories.update( 
+      {quantity:qty},
+      {where: {itemId:id},
+      
+      })
+
+  }
+  else{
+    res.send("You have already inserted this item in a cart");
+  }
+})
+
+  
   // var qty=inventories.decrement(['quantity'],{by: stock, where:{itemId:id}})
  
-inventories.update( 
-{quantity:qty},
-{where: {itemId:id},
-
-})
-//.then(inventories => res.status(201).send(inventories))
         }else
         { res.send("item is out of stock")}
 }  

@@ -70,6 +70,19 @@ inventories.findOne({
 
 
   },
+
+
+  getcust(req, res) {      
+    let custId = req.params.custId;       
+    
+     var condition = { 
+    where: {custId: req.params.custId }        
+        }       
+         return carts          
+          .findAll(condition).then(carts => {             
+           res.send(carts);           
+         });  
+    },
   
 
 

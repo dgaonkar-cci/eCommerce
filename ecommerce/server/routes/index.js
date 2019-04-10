@@ -49,6 +49,7 @@ app.get('/list/payments', paymentsController.list);
 app.post('/create/carts', cartsController.create);
 app.get('/list/carts', cartsController.list);
 app.delete('/delete/carts/:itmId/:custId', cartsController.delete);
+app.get('/customer/:custId', cartsController.getcust);
 
 
 //for orderitems
