@@ -7,6 +7,7 @@ const paymentsController = require('../controllers').payments;
 const cartsController = require('../controllers').carts;
 const orderitemsController = require('../controllers').orderitems;
 const ordersController = require('../controllers').orders;
+const cartitemsController = require('../controllers').cartitems;
 
 
 module.exports = (app) => {
@@ -16,7 +17,7 @@ module.exports = (app) => {
 //for customers
   app.post('/create/customers', customersController.create);
   app.get('/list/customers', customersController.list);
-  app.post('/create/orders/:id/:itmId', customersController.createOrder);
+  app.post('/create/orders/:custId', customersController.createOrder);
   
 
 //for categories
@@ -32,7 +33,7 @@ app.get('/list/subcategories', subcategoriesController.list);
 //for items
 app.post('/create/items', itemsController.create);
 app.get('/list/items', itemsController.list);
-app.post('/create/carts/:id/:quantity', itemsController.insertCart);
+app.post('/create/carts/:custId', itemsController.insertCart);
 
 
 //for inventory
@@ -48,7 +49,7 @@ app.get('/list/payments', paymentsController.list);
 //for carts
 app.post('/create/carts', cartsController.create);
 app.get('/list/carts', cartsController.list);
-app.delete('/delete/carts/:itmId/:custId', cartsController.delete);
+app.delete('/delete/carts', cartitemsController.delete);
 app.get('/customer/:custId', cartsController.getcust);
 
 
@@ -56,12 +57,18 @@ app.get('/customer/:custId', cartsController.getcust);
 app.post('/create/orderItems', orderitemsController.create);
 app.get('/list/orderItems', orderitemsController.list);
 
+
 //for orders
 app.put('/update/status/:id', ordersController.update);
 app.get('/list/orders', ordersController.list);
 app.get('/getstatus/:status', ordersController.getstatus);
 app.get('/getid/:custmId', ordersController.getid);
 app.get('/getByDate/:orderDate', ordersController.getByDate);
+app.get('/list/orders/:custid', customersController.findCustomersByOrders);
+
+
+//for cartitems
+app.get('/list/cartitems/:custid', cartitemsController.list);
 
 
 };

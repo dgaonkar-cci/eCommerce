@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "sa123456#",
-    "database": "ecommerce",
+    "database": "ecom",
     "host": "localhost",
     "dialect": "mysql"
   },

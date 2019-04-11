@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const carts = sequelize.define('carts', {
-    quantity: DataTypes.INTEGER
+  
   }, {});
   carts.associate = function(models) {
     // associations can be defined here
@@ -12,10 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
     });
 
-    carts.belongsTo(models.items, {
-      foreignKey: 'itmId',
-      onDelete: 'CASCADE',
+   
+
+    carts.hasMany(models.cartitems, {
+      foreignKey: 'cartId',
+      as: 'cart',
     });
+
 
 
   };

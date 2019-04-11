@@ -7,6 +7,7 @@ const carts = require('./carts');
 const payments = require('./payments');
 const orders = require('./orders');
 const orderitems = require('./orderitems');
+const cartitems = require('./cartitems');
 
 module.exports = {
   customers,
@@ -18,4 +19,5 @@ module.exports = {
   payments,
   orders,
   orderitems,
+  cartitems,
 };

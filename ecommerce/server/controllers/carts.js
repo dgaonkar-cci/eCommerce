@@ -1,5 +1,5 @@
 const carts = require ('../models').carts;
-const inventories = require ('../models').inventories;
+//const inventories = require ('../models').inventories;
 
 
 //const items = require('../models').items;
@@ -29,48 +29,7 @@ module.exports = {
   },
 
   //delete
-  delete(req, res) {
-    //return carts
-var itmId=req.params.itmId
-var custId=req.params.custId
-carts.findOne({
-
-  where: {itmId,custId},
-}).then(function (data) {
-  if(data){
-    var qty= data.quantity;
-
- carts.destroy(     
-            {where:{itmId:itmId,custId:custId}}
-           )
-          .then(carts => res.status(200).send("item removed successfully from the cart"))
-          //.catch((error) => res.status(400).send(error));
-
-inventories.findOne({
-  where:{itemId:itmId},
-}).then(function (item){
- if(item){
-   var qtt=item.quantity + qty;
-
-   inventories.update(
-     {quantity:qtt},
-     {where:{itemId:itmId},
-   })
- }
-})
-
-
-
-        }
-        })
-
-
-
-
-
-
-  },
-
+ 
 
   getcust(req, res) {      
     let custId = req.params.custId;       

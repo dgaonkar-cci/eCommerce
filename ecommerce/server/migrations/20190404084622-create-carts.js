@@ -8,9 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      quantity: {
-        type: Sequelize.INTEGER
-      },
+      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -30,15 +28,7 @@ module.exports = {
         },
       },
 
-      itmId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'items',
-          key: 'id',
-          as: 'itmId',
-        },
-      },
+      
 
 
 

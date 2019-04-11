@@ -1,9 +1,10 @@
 const customers = require('../models').customers;
 const orders = require('../models').orders;
-const carts = require('../models').carts;
+const cartitems = require('../models').cartitems;
 const orderitems = require('../models').orderitems;
 const items = require('../models').items;
-
+const Sequelize=require('sequelize')
+const Test=require('../models/index');
 module.exports = {
   //create
   create(req, res) {
@@ -41,22 +42,26 @@ res.send("Please provide your address");
   //create orders
 
   createOrder(req, res) {
-
+    var custId = req.params.custId;
+    var itmId = req.body.itmId;
+    var payId = req.body.payId;
+    var orderDate = req.body.orderDate;
+    var orderNo = req.body.orderNo;
+    var status= req.body.status;
 
     if(req.body.payId==null)
     {
-      res.send("please select the payment mode");
+      res.send("Please select the payment mode");
     }
     else{
-    var custId = req.params.id;
-    var itmId = req.params.itmId;
+   
 
-    carts.findOne({
-      where: { custId, itmId },
+      cartitems.findOne({
+      where: { custid:custId, itmId:itmId},
     }).then(function (data) {
       if (!data) {
 
-        res.send("customer or items is not present in the cart");
+        res.send("Customer or items is not present in the cart");
       }
 
       else {
@@ -68,12 +73,12 @@ res.send("Please provide your address");
             var price=item.price;
 
         orders.create({
-          orderDate: req.body.orderDate,
-          orderNo: req.body.orderNo,
+          orderDate: orderDate,
+          orderNo: orderNo,
           amount: price,
-          status: req.body.status,
+          status: status,
           custmId: custId,
-          payId: req.body.payId
+          payId: payId
         
         })
           .then(function (order) {
@@ -81,11 +86,16 @@ res.send("Please provide your address");
              // res.send(order);
 
               // find quantity
-              carts.findOne({
-                where: { custId, itmId },
+              cartitems.findOne({
+                where: { custid:custId,itmId:itmId },
               }).then(function (data) {
                 if (data) {
-                  var qtty = data.quantity;
+                var qtty = data.quantity;
+
+
+               
+
+
                     
                orderitems.create({
                     quantity: qtty,
@@ -97,11 +107,11 @@ res.send("Please provide your address");
 
 
                   //delete cart after order
-                  carts.destroy(
-                    { where: { custId, itmId } }
+                  cartitems.destroy(
+                    { where: { custid:custId, itmId:itmId} }
                   )
                   //.then(carts => res.status(201).send(carts))
-                }
+               }
                 })
                
               
@@ -123,5 +133,19 @@ res.send("Please provide your address");
       })
     }
     },
+
+    findCustomersByOrders(req,res){
+                  Test.sequelize.query('CALL findOrders(:custid)',{ replacements: { custid: req.params.custid }, type: Test.sequelize.QueryTypes.SELECT })  
+                .then(function (data) {      
+                  if (data) {         
+                     res.send(data)       
+                     }
+                      else {         
+                         return res.status(404).send({message: 'You have not placed any orders' })       
+             }     
+             })  
+            },
+
+
     
 };
